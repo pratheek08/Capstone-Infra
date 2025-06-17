@@ -44,10 +44,6 @@ module "vnet2" {
   depends_on = [module.resource_group]
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 4e1c6bdfc7911d164b98322d8dc90f551ad19655
 # VNet Peering: vnet1 --> vnet2
 module "vnet1_to_vnet2" {
   source              = "./Modules/VnetPeering"
@@ -55,10 +51,7 @@ module "vnet1_to_vnet2" {
   resource_group_name = module.resource_group.rg_name
   source_vnet_name    = module.vnet1.vnet_name
   remote_vnet_id      = module.vnet2.vnet_id
-<<<<<<< HEAD
-=======
   depends_on = [module.vnet1]
->>>>>>> 4e1c6bdfc7911d164b98322d8dc90f551ad19655
 }
 
 # VNet Peering: vnet2 --> vnet1
@@ -68,7 +61,7 @@ module "vnet2_to_vnet1" {
   resource_group_name = module.resource_group.rg_name
   source_vnet_name    = module.vnet2.vnet_name
   remote_vnet_id      = module.vnet1.vnet_id
-<<<<<<< HEAD
+  depends_on = [module.vnet2]
 }
 
 # ACR
@@ -106,7 +99,4 @@ module "aks2" {
   additional_node_count = var.additional_node_count
   kubernetes_version    = var.kubernetes_version
 }
-=======
-  depends_on = [module.vnet2]
-}
->>>>>>> 4e1c6bdfc7911d164b98322d8dc90f551ad19655
+
