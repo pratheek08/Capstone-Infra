@@ -8,13 +8,10 @@ variables:
 
 stages:
   - stage: Terraform
-    displayName: 'Terraform Stage'
     jobs:
       - job: TerraformJob
-        displayName: 'Run Terraform'
+        displayName: 'Terraform Infrastructure Deployment'
         steps:
-          - checkout: self
-
           - task: AzureCLI@2
             displayName: 'Terraform Init'
             inputs:
@@ -24,3 +21,23 @@ stages:
               workingDirectory: $(terraformDirectory)
               inlineScript: |
                 terraform init
+
+          - task: AzureCLI@2
+            displayName: 'Terraform Plan'
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              workingDirectory: $(terraformDirectory)
+              inlineScript: |
+                terraform plan -out=tfplan
+
+          - task: AzureCLI@2
+            displayName: 'Terraform Apply'
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              workingDirectory: $(terraformDirectory)
+              inlineScript: |
+                terraform apply -auto-approve tfplan
