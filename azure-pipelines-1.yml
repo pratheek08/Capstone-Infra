@@ -11,7 +11,7 @@ stages:
       - job: terraform
         displayName: 'Terraform Workflow'
         pool:
-          vmImage: projectagent
+          name: Default
 
         steps:
           - task: Checkout@1
