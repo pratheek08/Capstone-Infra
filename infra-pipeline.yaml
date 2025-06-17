@@ -1,0 +1,39 @@
+trigger: none
+pool:
+  name: Default
+variables:
+  terraformDirectory: '.'
+  azureServiceConnection: 'prashanthscn'
+stages:
+  - stage: Terraform
+    jobs:
+      - job: TerraformJob
+        displayName: 'Terraform Infrastructure Deployment'
+        steps:
+          - task: AzureCLI@2
+            displayName: 'Terraform Init'
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              workingDirectory: $(terraformDirectory)
+              inlineScript: |
+                terraform init
+          - task: AzureCLI@2
+            displayName: 'Terraform Plan'
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              workingDirectory: $(terraformDirectory)
+              inlineScript: |
+                terraform plan -out=tfplan
+          - task: AzureCLI@2
+            displayName: 'Terraform Apply'
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              workingDirectory: $(terraformDirectory)
+              inlineScript: |
+                terraform apply -auto-approve tfplan
