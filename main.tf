@@ -68,7 +68,7 @@ module "vnet2_to_vnet1" {
 module "acr" {
   source              = "./Modules/ACR"
   acr_name            = var.acr_name
-  resource_group_name = module.rg.rg_name
+  resource_group_name = module.resource_group.rg_name
   location            = var.vnet1_location
 }
 
@@ -76,7 +76,7 @@ module "acr" {
 module "aks1" {
   source                = "./Modules/AKS"
   cluster_name          = "aks-cluster-vnet1"
-  resource_group_name   = module.rg.rg_name
+  resource_group_name   = module.resource_group.rg_name
   location              = var.vnet1_location
   subnet_ids            = module.vnet1.subnet_ids
   acr_id                = module.acr.acr_id
@@ -90,7 +90,7 @@ module "aks1" {
 module "aks2" {
   source                = "./Modules/AKS"
   cluster_name          = "aks-cluster-vnet2"
-  resource_group_name   = module.rg.rg_name
+  resource_group_name   = module.resource_group.rg_name
   location              = var.vnet2_location
   subnet_ids            = module.vnet2.subnet_ids
   acr_id                = module.acr.acr_id
