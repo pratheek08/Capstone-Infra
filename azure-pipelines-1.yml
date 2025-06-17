@@ -1,7 +1,7 @@
 trigger: none
 
 variables:
-  azureServiceConnection: '58050a78-613a-43fc-a919-00c9cbc7d651'
+  azureServiceConnection: 'prashanthscn'
   terraformDirectory: './'
 
 stages:
