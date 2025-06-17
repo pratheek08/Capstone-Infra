@@ -2,6 +2,15 @@ variable "location" {
   default = "East US"
 }
 
+variable "vnet1_location" {
+  default = "East US"
+}
+
+variable "vnet2_location" {
+  default = "West US"
+}
+
+
 variable "rg_name" {
   default = "modular-rg"
 }
