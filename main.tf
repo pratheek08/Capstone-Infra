@@ -43,3 +43,24 @@ module "vnet2" {
   resource_group_name = module.resource_group.rg_name
   depends_on = [module.resource_group]
 }
+
+
+# VNet Peering: vnet1 --> vnet2
+module "vnet1_to_vnet2" {
+  source              = "./Modules/VnetPeering"
+  peering_name        = "vnet1-to-vnet2"
+  resource_group_name = module.resource_group.rg_name
+  source_vnet_name    = module.vnet1.vnet_name
+  remote_vnet_id      = module.vnet2.vnet_id
+  depends_on = [module.vnet1]
+}
+
+# VNet Peering: vnet2 --> vnet1
+module "vnet2_to_vnet1" {
+  source              = "./Modules/VnetPeering"
+  peering_name        = "vnet2-to-vnet1"
+  resource_group_name = module.resource_group.rg_name
+  source_vnet_name    = module.vnet2.vnet_name
+  remote_vnet_id      = module.vnet1.vnet_id
+  depends_on = [module.vnet2]
+}
