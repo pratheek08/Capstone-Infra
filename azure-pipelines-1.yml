@@ -9,3 +9,12 @@ steps:
     inputs:
       targetType: 'inline'
       script: echo "Hello from prashanthagent"
+  - task: Bash@3
+    displayName: 'Print Context'
+    inputs:
+      targetType: 'inline'
+      script: |
+        echo "Agent Name: $(Agent.Name)"
+        echo "Agent Machine: $(Agent.MachineName)"
+        echo "Build Source Directory: $(Build.SourcesDirectory)"
+        echo "Terraform Dir: $(terraformDirectory)"
