@@ -27,7 +27,7 @@ module "vnet1" {
   address_space       = var.vnet1_address_space
   subnet_prefixes     = var.vnet1_subnet_prefixes
   subnet_names        = var.vnet1_subnet_names
-  location            = var.location
+  location            = var.vnet1_location
   resource_group_name = module.resource_group.rg_name
   depends_on = [module.resource_group]
 }
@@ -39,7 +39,7 @@ module "vnet2" {
   address_space       = var.vnet2_address_space
   subnet_prefixes     = var.vnet2_subnet_prefixes
   subnet_names        = var.vnet2_subnet_names
-  location            = var.location
+  location            = var.vnet2_location
   resource_group_name = module.resource_group.rg_name
   depends_on = [module.resource_group]
 }
