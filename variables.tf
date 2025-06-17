@@ -46,3 +46,23 @@ variable "vnet1_subnet_prefixes" {
 variable "vnet2_subnet_prefixes" {
   default = ["10.1.1.0/24", "10.1.2.0/24"]
 }
+
+
+# ACR
+variable "acr_name" {
+  default = "mysharedacr1234"
+}
+
+# AKS
+variable "node_vm_size" {
+  default = "Standard_DS2_v2"
+}
+variable "default_node_count" {
+  default = 1
+}
+variable "additional_node_count" {
+  default = 1
+}
+variable "kubernetes_version" {
+  default = "1.29.2"
+}

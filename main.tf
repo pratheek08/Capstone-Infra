@@ -43,3 +43,57 @@ module "vnet2" {
   resource_group_name = module.resource_group.rg_name
   depends_on = [module.resource_group]
 }
+
+# VNet Peering: vnet1 --> vnet2
+module "vnet1_to_vnet2" {
+  source              = "./Modules/VnetPeering"
+  peering_name        = "vnet1-to-vnet2"
+  resource_group_name = module.resource_group.rg_name
+  source_vnet_name    = module.vnet1.vnet_name
+  remote_vnet_id      = module.vnet2.vnet_id
+}
+
+# VNet Peering: vnet2 --> vnet1
+module "vnet2_to_vnet1" {
+  source              = "./Modules/VnetPeering"
+  peering_name        = "vnet2-to-vnet1"
+  resource_group_name = module.resource_group.rg_name
+  source_vnet_name    = module.vnet2.vnet_name
+  remote_vnet_id      = module.vnet1.vnet_id
+}
+
+# ACR
+module "acr" {
+  source              = "./Modules/ACR"
+  acr_name            = var.acr_name
+  resource_group_name = module.rg.rg_name
+  location            = var.vnet1_location
+}
+
+# AKS in VNet 1
+module "aks1" {
+  source                = "./Modules/AKS"
+  cluster_name          = "aks-cluster-vnet1"
+  resource_group_name   = module.rg.rg_name
+  location              = var.vnet1_location
+  subnet_ids            = module.vnet1.subnet_ids
+  acr_id                = module.acr.acr_id
+  node_vm_size          = var.node_vm_size
+  default_node_count    = var.default_node_count
+  additional_node_count = var.additional_node_count
+  kubernetes_version    = var.kubernetes_version
+}
+
+# AKS in VNet 2
+module "aks2" {
+  source                = "./Modules/AKS"
+  cluster_name          = "aks-cluster-vnet2"
+  resource_group_name   = module.rg.rg_name
+  location              = var.vnet2_location
+  subnet_ids            = module.vnet2.subnet_ids
+  acr_id                = module.acr.acr_id
+  node_vm_size          = var.node_vm_size
+  default_node_count    = var.default_node_count
+  additional_node_count = var.additional_node_count
+  kubernetes_version    = var.kubernetes_version
+}
