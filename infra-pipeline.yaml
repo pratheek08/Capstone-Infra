@@ -18,7 +18,18 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
+                terraform validate
+
+          - task: AzureCLI@2
+            displayName: 'Terraform Init'
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              workingDirectory: $(terraformDirectory)
+              inlineScript: |
                 terraform init
+
           - task: AzureCLI@2
             displayName: 'Terraform Plan'
             inputs:
@@ -28,6 +39,7 @@ stages:
               workingDirectory: $(terraformDirectory)
               inlineScript: |
                 terraform plan -out=tfplan
+                
           - task: AzureCLI@2
             displayName: 'Terraform Apply'
             inputs:
