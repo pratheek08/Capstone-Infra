@@ -1,8 +1,8 @@
-trigger: none
+trigger:
+ - main
 
 variables:
   azureServiceConnection: 'prashanthscn'
-  terraformDirectory: './'
 
 stages:
   - stage: TerraformProvision
@@ -14,9 +14,6 @@ stages:
           name: Default
 
         steps:
-          - task: Checkout@1
-            displayName: 'Checkout Repository'
-
           - task: Bash@3
             displayName: 'Install Terraform'
             inputs:
