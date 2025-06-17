@@ -29,6 +29,7 @@ module "vnet1" {
   subnet_names        = var.vnet1_subnet_names
   location            = var.location
   resource_group_name = module.resource_group.rg_name
+  depends_on = [module.resource_group]
 }
 
 #Virtual network two module
@@ -40,4 +41,5 @@ module "vnet2" {
   subnet_names        = var.vnet2_subnet_names
   location            = var.location
   resource_group_name = module.resource_group.rg_name
+  depends_on = [module.resource_group]
 }
