@@ -1,7 +1,7 @@
 trigger: none
 
 variables:
-  azureServiceConnection: 'Subscription_UST'  # 🔁 Replace with your Azure DevOps service connection name
+  azureServiceConnection: '9030fce5-888e-4022-a896-4e042506c89a'  # 🔁 Replace with your Azure DevOps service connection name
   terraformDirectory: './'  # Change this if your Terraform code is in a subfolder
 
 stages:
