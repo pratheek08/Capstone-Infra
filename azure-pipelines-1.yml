@@ -1,28 +1,11 @@
 trigger: none
 
-variables:
-  azureServiceConnection: 'prashanthscn'
-  terraformDirectory: './'
+pool:
+  name: Default
 
-stages:
-  - stage: Terraform
-    displayName: 'Terraform Provisioning Stage'
-    jobs:
-      - job: terraform
-        displayName: 'Terraform Workflow'
-        pool:
-          name: Default
-
-        steps:
-          - task: Checkout@1
-            displayName: 'Checkout Source Code'
-
-          - task: AzureCLI@2
-            displayName: 'Terraform Init'
-            inputs:
-              azureSubscription: $(azureServiceConnection)
-              scriptType: bash
-              scriptLocation: inlineScript
-              workingDirectory: $(terraformDirectory)
-              inlineScript: |
-                terraform init
+steps:
+  - task: Bash@3
+    displayName: 'Basic Hello World'
+    inputs:
+      targetType: 'inline'
+      script: echo "Hello from prashanthagent"
