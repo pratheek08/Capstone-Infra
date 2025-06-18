@@ -1,5 +1,7 @@
 trigger: none  # Run manually only
 
+variables:
+    azureServiceConnection: 'prashanthscn'
 stages:
   - stage: CreateTerraformBackend
     displayName: "Create Terraform Backend Resources"
@@ -14,7 +16,7 @@ stages:
           - task: AzureCLI@2
             displayName: "Create Resource Group"
             inputs:
-              azureSubscription: 'Your-Azure-Service-Connection-Name'  # Replace
+              azureSubscription: $(azureServiceConnection)  # Replace
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
@@ -26,7 +28,7 @@ stages:
           - task: AzureCLI@2
             displayName: "Create Storage Account"
             inputs:
-              azureSubscription: 'Your-Azure-Service-Connection-Name'  # Replace
+              azureSubscription: $(azureServiceConnection)  # Replace
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
@@ -41,7 +43,7 @@ stages:
             name: GetKey
             displayName: "Get Storage Account Key"
             inputs:
-              azureSubscription: 'Your-Azure-Service-Connection-Name'  # Replace
+              azureSubscription: $(azureServiceConnection)  # Replace
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
@@ -56,7 +58,7 @@ stages:
           - task: AzureCLI@2
             displayName: "Create Blob Container for Terraform State"
             inputs:
-              azureSubscription: 'Your-Azure-Service-Connection-Name'  # Replace
+              azureSubscription: $(azureServiceConnection)  # Replace
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
