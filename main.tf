@@ -83,7 +83,7 @@ module "aks1" {
   node_vm_size          = var.node_vm_size
   default_node_count    = var.default_node_count
   additional_node_count = var.additional_node_count
-  kubernetes_version    = var.kubernetes_version
+  // kubernetes_version    = var.kubernetes_version
 }
 
 # AKS in VNet 2
@@ -97,6 +97,6 @@ module "aks2" {
   node_vm_size          = var.node_vm_size
   default_node_count    = var.default_node_count
   additional_node_count = var.additional_node_count
-  kubernetes_version    = var.kubernetes_version
+  // kubernetes_version    = var.kubernetes_version
 }
 
