@@ -4,6 +4,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = var.resource_group_name
   dns_prefix          = "${var.cluster_name}-dns"
   kubernetes_version  = var.kubernetes_version
+  
 
   default_node_pool {
     name           = "defaultnp"
@@ -29,8 +30,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "subnet_b_pools" {
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
   vm_size            = var.node_vm_size
   node_count         = var.additional_node_count
-  vnet_subnet_id     = var.subnet_ids[count.index % length(var.subnet_ids)]
+  vnet_subnet_id = element(var.subnet_ids, count.index)
   mode               = "User"
+  
   #orchestrator_version = var.kubernetes_version
 }
 
