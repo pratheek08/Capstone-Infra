@@ -55,7 +55,7 @@ variable "acr_name" {
 
 # AKS
 variable "node_vm_size" {
-  default = "Standard_DS2_v2"
+  default = "standard_a2_v2"
 }
 variable "default_node_count" {
   default = 1
