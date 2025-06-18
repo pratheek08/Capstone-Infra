@@ -6,8 +6,8 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name  = "my-rg"
-    storage_account_name = "mystatestorage123"      # Must be globally unique
+    resource_group_name  = "storage-backend-rg"
+    storage_account_name = "statefileterraform24732"      # Must be globally unique
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
   }
