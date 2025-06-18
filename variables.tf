@@ -3,7 +3,7 @@ variable "location" {
 }
 
 variable "vnet1_location" {
-  default = "central us"
+  default = "eastus"
 }
 
 variable "vnet2_location" {
