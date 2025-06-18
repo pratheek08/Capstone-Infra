@@ -84,6 +84,7 @@ module "aks1" {
   default_node_count    = var.default_node_count
   additional_node_count = var.additional_node_count
   // kubernetes_version    = var.kubernetes_version
+  depends_on = [module.acr]
 }
 
 # AKS in VNet 2
@@ -98,5 +99,6 @@ module "aks2" {
   default_node_count    = var.default_node_count
   additional_node_count = var.additional_node_count
   // kubernetes_version    = var.kubernetes_version
+  depends_on = [module.acr]
 }
 
