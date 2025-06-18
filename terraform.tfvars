@@ -1,4 +1,4 @@
-location           = "East US"
+// location           = "East US"
 rg_name            = "my-rg"
 vnet1_name         = "vnet-prod"
 vnet2_name         = "vnet-dev"
