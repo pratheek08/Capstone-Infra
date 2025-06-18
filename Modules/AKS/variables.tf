@@ -7,7 +7,7 @@ variable "subnet_ids" {
 }
 variable "acr_id" {}
 variable "node_vm_size" {
-  default = "Standard_DS2_v2"
+  default = "standard_a8m_v2"
 }
 variable "default_node_count" {
   default = 1
