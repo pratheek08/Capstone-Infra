@@ -5,12 +5,27 @@ terraform {
       version = "~> 3.105"
     }
   }
+  backend "azurerm" {
+    resource_group_name  = "my-rg"
+    storage_account_name = "mystatestorage123"      # Must be globally unique
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+  }
 }
 
 #terraform provider
 provider "azurerm" {
   features {}
   skip_provider_registration = true
+}
+
+#Storage backend
+module "storage_backend" {
+  source                = "./Modules/storage_backend"
+  resource_group_name   = "my-rg"
+  location              = "eastus"
+  storage_account_name  = "mystatestorage123"
+  container_name        = "tfstate"
 }
 
 #Resource group Module 
