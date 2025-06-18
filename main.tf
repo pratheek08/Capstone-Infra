@@ -70,6 +70,7 @@ module "acr" {
   acr_name            = var.acr_name
   resource_group_name = module.resource_group.rg_name
   location            = var.vnet1_location
+  depends_on = [module.resource_group]
 }
 
 # AKS in VNet 1
