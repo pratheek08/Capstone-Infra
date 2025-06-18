@@ -19,14 +19,7 @@ provider "azurerm" {
   skip_provider_registration = true
 }
 
-#Storage backend
-module "storage_backend" {
-  source                = "./Modules/storage_backend"
-  resource_group_name   = "my-rg1"
-  location              = "eastus"
-  storage_account_name  = "mystatestorage123"
-  container_name        = "tfstate"
-}
+
 
 #Resource group Module 
 module "resource_group" {
