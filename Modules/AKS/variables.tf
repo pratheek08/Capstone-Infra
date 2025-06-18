@@ -16,7 +16,7 @@ variable "additional_node_count" {
   default = 1
 }
 variable "kubernetes_version" {
-  default = "1.29.3"
+  default = "1.32.4"
 }
 
 # File: Modules/AKS/outputs.tf
