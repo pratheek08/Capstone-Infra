@@ -3,7 +3,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   location            = var.location
   resource_group_name = var.resource_group_name
   dns_prefix          = "${var.cluster_name}-dns"
-  // kubernetes_version  = var.kubernetes_version
+  kubernetes_version  = var.kubernetes_version
 
   default_node_pool {
     name           = "defaultnp"
@@ -31,7 +31,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "subnet_b_pools" {
   node_count         = var.additional_node_count
   vnet_subnet_id     = var.subnet_ids[count.index % length(var.subnet_ids)]
   mode               = "User"
-  orchestrator_version = var.kubernetes_version
+  #orchestrator_version = var.kubernetes_version
 }
 
 resource "azurerm_role_assignment" "aks_acr" {
