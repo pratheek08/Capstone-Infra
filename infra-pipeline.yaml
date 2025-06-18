@@ -38,6 +38,7 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
+                terraform force-unlock 67fed49c-5aec-5248-4a2f-682d7c628222
                 terraform plan -out=tfplan
                 
           - task: AzureCLI@2
