@@ -3,11 +3,11 @@ variable "location" {
 }
 
 variable "vnet1_location" {
-  default = "Japan East"
+  default = "central us"
 }
 
 variable "vnet2_location" {
-  default = "West Europe"
+  default = "west us 3"
 }
 
 
@@ -55,7 +55,7 @@ variable "acr_name" {
 
 # AKS
 variable "node_vm_size" {
-  default = "standard_a2_v2"
+  default = "Standard_A2_v2"
 }
 variable "default_node_count" {
   default = 1
