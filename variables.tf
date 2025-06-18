@@ -3,11 +3,11 @@ variable "location" {
 }
 
 variable "vnet1_location" {
-  default = "East US"
+  default = "Japan East"
 }
 
 variable "vnet2_location" {
-  default = "West US"
+  default = "West Europe"
 }
 
 
