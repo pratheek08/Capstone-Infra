@@ -71,6 +71,21 @@ module "vnet2_to_vnet1" {
   remote_vnet_id      = module.vnet1.vnet_id
   depends_on = [module.vnet2]
 }
+# Load Balancer for VNet1 (Primary Region)
+module "lb1" {
+  source              = "./Modules/LoadBalancer"
+  name                = "lb-prod"
+  location            = var.vnet1_location
+  resource_group_name = module.resource_group.rg_name
+}
+
+# Load Balancer for VNet2 (Secondary Region)
+module "lb2" {
+  source              = "./Modules/LoadBalancer"
+  name                = "lb-dev"
+  location            = var.vnet2_location
+  resource_group_name = module.resource_group.rg_name
+}
 
 # ACR
 module "acr" {
