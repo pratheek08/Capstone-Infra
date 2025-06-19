@@ -1,10 +1,11 @@
-resource "azurerm_public_ip" "this" {
+resource "azurerm_public_ip" "appgw_pip" {
   name                = "${var.name}-pip"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
   sku                 = "Standard"
 }
+
 
 resource "azurerm_application_gateway" "this" {
   name                = var.name
@@ -27,9 +28,10 @@ resource "azurerm_application_gateway" "this" {
   }
 
   frontend_ip_configuration {
-    name                 = "frontendIP"
-    public_ip_address_id = azurerm_public_ip.this.id
+    name                 = "appGwFrontendIP"
+    public_ip_address_id = azurerm_public_ip.appgw_pip.id
   }
+
 
   backend_address_pool {
     name = "defaultBackendPool"
