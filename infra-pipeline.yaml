@@ -20,7 +20,7 @@ stages:
           #     inlineScript: |
           #       terraform init -upgrade
           - task: AzureCLI@2
-            displayName: 'Terraform Init'
+            displayName: 'Terraform destroy'
             inputs:
               azureSubscription: $(azureServiceConnection)
               scriptType: bash
