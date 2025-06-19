@@ -2,7 +2,6 @@ resource "azurerm_traffic_manager_profile" "this" {
   name                = var.profile_name
   resource_group_name = var.resource_group_name
   traffic_routing_method = "Priority"
-  location            = "global"
 
   dns_config {
     relative_name = var.dns_name
@@ -19,21 +18,19 @@ resource "azurerm_traffic_manager_profile" "this" {
   }
 }
 
-resource "azurerm_traffic_manager_endpoint" "primary" {
+resource "azurerm_traffic_manager_external_endpoint" "primary" {
   name                = "primary-endpoint"
   profile_name        = azurerm_traffic_manager_profile.this.name
   resource_group_name = var.resource_group_name
-  type                = "externalEndpoints"
   target              = var.primary_ip
   endpoint_location   = var.primary_location
   priority            = 1
 }
 
-resource "azurerm_traffic_manager_endpoint" "secondary" {
+resource "azurerm_traffic_manager_external_endpoint" "secondary" {
   name                = "secondary-endpoint"
   profile_name        = azurerm_traffic_manager_profile.this.name
   resource_group_name = var.resource_group_name
-  type                = "externalEndpoints"
   target              = var.secondary_ip
   endpoint_location   = var.secondary_location
   priority            = 2
