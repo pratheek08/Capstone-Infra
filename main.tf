@@ -71,21 +71,26 @@ module "vnet2_to_vnet1" {
   remote_vnet_id      = module.vnet1.vnet_id
   depends_on = [module.vnet2]
 }
-# Load Balancer for VNet1 (Primary Region)
-module "lb1" {
-  source              = "./Modules/LoadBalancer"
-  name                = "lb-prod"
+
+
+module "appgw1" {
+  source              = "./Modules/Applicationgateway"
+  name                = "appgw-prod"
   location            = var.vnet1_location
   resource_group_name = module.resource_group.rg_name
+  subnet_id           = module.vnet1.subnet_ids[2]  # appgw-subnet
+  depends_on = [module.vnet1]
 }
 
-# Load Balancer for VNet2 (Secondary Region)
-module "lb2" {
-  source              = "./Modules/LoadBalancer"
-  name                = "lb-dev"
+module "appgw2" {
+  source              = "./Modules/Applicationgateway"
+  name                = "appgw-dev"
   location            = var.vnet2_location
   resource_group_name = module.resource_group.rg_name
+  subnet_id           = module.vnet2.subnet_ids[2]  # appgw-subnet
+  depends_on = [module.vnet2]
 }
+
 
 # ACR
 module "acr" {
@@ -103,10 +108,11 @@ module "traffic_manager" {
   dns_name            = "my-global-aks"
   resource_group_name = module.resource_group.rg_name
 
-  primary_ip          = module.lb1.lb_public_ip
+  primary_ip   = module.appgw1.public_ip
   primary_location    = var.vnet1_location
 
-  secondary_ip        = module.lb2.lb_public_ip
+  
+  secondary_ip = module.appgw2.public_ip
   secondary_location  = var.vnet2_location
 }
 
