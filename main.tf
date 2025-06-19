@@ -122,7 +122,7 @@ module "aks1" {
   cluster_name          = "aks-cluster-vnet1"
   resource_group_name   = module.resource_group.rg_name
   location              = var.vnet1_location
-  subnet_ids            = module.vnet1.subnet_ids
+  subnet_ids            = [module.vnet1.subnet_ids[0], module.vnet1.subnet_ids[1]]
   acr_id                = module.acr.acr_id
   node_vm_size          = var.node_vm_size
   default_node_count    = var.default_node_count
@@ -137,7 +137,7 @@ module "aks2" {
   cluster_name          = "aks-cluster-vnet2"
   resource_group_name   = module.resource_group.rg_name
   location              = var.vnet2_location
-  subnet_ids            = module.vnet2.subnet_ids
+  subnet_ids            = [module.vnet2.subnet_ids[0], module.vnet2.subnet_ids[1]]
   acr_id                = module.acr.acr_id
   node_vm_size          = var.node_vm_size
   default_node_count    = var.default_node_count
