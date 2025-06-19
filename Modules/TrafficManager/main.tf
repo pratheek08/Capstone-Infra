@@ -20,7 +20,7 @@ resource "azurerm_traffic_manager_profile" "this" {
 
 resource "azurerm_traffic_manager_external_endpoint" "primary" {
   name                = "primary-endpoint"
-  profile_name        = azurerm_traffic_manager_profile.this.name
+  profile_id        = azurerm_traffic_manager_profile.this.id
   resource_group_name = var.resource_group_name
   target              = var.primary_ip
   endpoint_location   = var.primary_location
@@ -29,7 +29,7 @@ resource "azurerm_traffic_manager_external_endpoint" "primary" {
 
 resource "azurerm_traffic_manager_external_endpoint" "secondary" {
   name                = "secondary-endpoint"
-  profile_name        = azurerm_traffic_manager_profile.this.name
+  profile_id        = azurerm_traffic_manager_profile.this.id
   resource_group_name = var.resource_group_name
   target              = var.secondary_ip
   endpoint_location   = var.secondary_location
