@@ -96,6 +96,20 @@ module "acr" {
   depends_on = [module.resource_group]
 }
 
+# Traffic Manager
+module "traffic_manager" {
+  source              = "./Modules/TrafficManager"
+  profile_name        = "global-tm"
+  dns_name            = "my-global-aks"
+  resource_group_name = module.resource_group.rg_name
+
+  primary_ip          = module.lb1.lb_public_ip
+  primary_location    = var.vnet1_location
+
+  secondary_ip        = module.lb2.lb_public_ip
+  secondary_location  = var.vnet2_location
+}
+
 # AKS in VNet 1
 module "aks1" {
   source                = "./Modules/AKS"
