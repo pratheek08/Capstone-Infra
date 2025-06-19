@@ -1,5 +1,5 @@
 variable "name" {
-  description = "Name prefix for the Load Balancer and resources"
+  description = "Prefix name for resources"
   type        = string
 }
 
@@ -9,6 +9,12 @@ variable "location" {
 }
 
 variable "resource_group_name" {
-  description = "Resource Group where the LB will be created"
+  description = "Name of the resource group"
   type        = string
+}
+
+variable "backend_port" {
+  description = "Port that Load Balancer forwards traffic to (e.g., NodePort 30080)"
+  type        = number
+  default     = 30080
 }
