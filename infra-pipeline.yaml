@@ -27,7 +27,7 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
-                terraform destroy -auto-approve tfplan
+                terraform destroy -auto-approve
 
           # - task: AzureCLI@2
           #   displayName: 'Terraform Validate'
