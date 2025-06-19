@@ -10,6 +10,15 @@ stages:
       - job: TerraformJob
         displayName: 'Terraform Infrastructure Deployment'
         steps:
+          # - task: AzureCLI@2
+          #   displayName: 'Terraform Init'
+          #   inputs:
+          #     azureSubscription: $(azureServiceConnection)
+          #     scriptType: bash
+          #     scriptLocation: inlineScript
+          #     workingDirectory: $(terraformDirectory)
+          #     inlineScript: |
+          #       terraform init -upgrade
           - task: AzureCLI@2
             displayName: 'Terraform Init'
             inputs:
@@ -18,34 +27,34 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
-                terraform init -upgrade
+                terraform destroy -auto-approve tfplan
 
-          - task: AzureCLI@2
-            displayName: 'Terraform Validate'
-            inputs:
-              azureSubscription: $(azureServiceConnection)
-              scriptType: bash
-              scriptLocation: inlineScript
-              workingDirectory: $(terraformDirectory)
-              inlineScript: |
-                terraform validate
+          # - task: AzureCLI@2
+          #   displayName: 'Terraform Validate'
+          #   inputs:
+          #     azureSubscription: $(azureServiceConnection)
+          #     scriptType: bash
+          #     scriptLocation: inlineScript
+          #     workingDirectory: $(terraformDirectory)
+          #     inlineScript: |
+          #       terraform validate
 
-          - task: AzureCLI@2
-            displayName: 'Terraform Plan'
-            inputs:
-              azureSubscription: $(azureServiceConnection)
-              scriptType: bash
-              scriptLocation: inlineScript
-              workingDirectory: $(terraformDirectory)
-              inlineScript: |
-                terraform plan -out=tfplan
+          # - task: AzureCLI@2
+          #   displayName: 'Terraform Plan'
+          #   inputs:
+          #     azureSubscription: $(azureServiceConnection)
+          #     scriptType: bash
+          #     scriptLocation: inlineScript
+          #     workingDirectory: $(terraformDirectory)
+          #     inlineScript: |
+          #       terraform plan -out=tfplan
                 
-          - task: AzureCLI@2
-            displayName: 'Terraform Apply'
-            inputs:
-              azureSubscription: $(azureServiceConnection)
-              scriptType: bash
-              scriptLocation: inlineScript
-              workingDirectory: $(terraformDirectory)
-              inlineScript: |
-                terraform apply -auto-approve tfplan
+          # - task: AzureCLI@2
+          #   displayName: 'Terraform Apply'
+          #   inputs:
+          #     azureSubscription: $(azureServiceConnection)
+          #     scriptType: bash
+          #     scriptLocation: inlineScript
+          #     workingDirectory: $(terraformDirectory)
+          #     inlineScript: |
+          #       terraform apply -auto-approve tfplan
