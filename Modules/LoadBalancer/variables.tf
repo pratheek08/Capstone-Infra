@@ -1,16 +1,14 @@
-variable "aks_node_private_ips" {
-  description = "Private IPs of the AKS nodes for backend pool"
-  type        = list(string)
-  default     = []
-}
-
-variable "vnet_id" {
-  description = "VNet ID where the AKS nodes reside"
+variable "name" {
+  description = "Name prefix for the Load Balancer and resources"
   type        = string
 }
 
-variable "backend_port" {
-  description = "Port exposed by the AKS ingress NodePort"
-  type        = number
-  default     = 30080
+variable "location" {
+  description = "Azure region"
+  type        = string
+}
+
+variable "resource_group_name" {
+  description = "Resource Group where the LB will be created"
+  type        = string
 }
