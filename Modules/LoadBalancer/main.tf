@@ -39,7 +39,7 @@ resource "azurerm_lb_rule" "http" {
   frontend_port                   = 80
   backend_port                    = var.backend_port
   frontend_ip_configuration_name  = "PublicFrontend"
-  backend_address_pool_id         = azurerm_lb_backend_address_pool.backend.id
+  backend_address_pool_ids        = [azurerm_lb_backend_address_pool.backend.id]
   probe_id                        = azurerm_lb_probe.http.id
   loadbalancer_id                 = azurerm_lb.this.id
 }
