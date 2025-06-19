@@ -32,20 +32,21 @@ variable "vnet2_address_space" {
 }
 
 variable "vnet1_subnet_names" {
-  default = ["subnet1-a", "subnet1-b"]
+  default = ["subnet1-a", "subnet1-b", "appgw-subnet"]
 }
 
 variable "vnet2_subnet_names" {
-  default = ["subnet2-a", "subnet2-b"]
+  default = ["subnet2-a", "subnet2-b", "appgw-subnet"]
 }
 
 variable "vnet1_subnet_prefixes" {
-  default = ["10.0.1.0/24", "10.0.2.0/24"]
+  default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
 variable "vnet2_subnet_prefixes" {
-  default = ["10.1.1.0/24", "10.1.2.0/24"]
+  default = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
 }
+
 
 
 # ACR
