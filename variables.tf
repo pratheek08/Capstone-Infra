@@ -70,6 +70,8 @@ variable "vnet1_subnet_prefixes" {
 variable "vnet2_subnet_prefixes" {
   default = ["10.1.1.0/24", "10.1.2.0/24"]
 
+}
+
 # ACR
 variable "acr_name" {
   default = "mysharedacr1234"
