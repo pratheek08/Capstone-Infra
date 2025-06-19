@@ -91,21 +91,22 @@ module "vnet2_to_vnet1" {
 //   depends_on = [module.vnet2]
 // }
 
-# Load Balancer VNet1 (Primary)
 module "lb1" {
   source              = "./Modules/LoadBalancer"
   name                = "lb-prod"
   location            = var.vnet1_location
   resource_group_name = module.resource_group.rg_name
+  backend_port        = 30080
 }
 
-# Load Balancer VNet2 (Secondary)
 module "lb2" {
   source              = "./Modules/LoadBalancer"
   name                = "lb-dev"
   location            = var.vnet2_location
   resource_group_name = module.resource_group.rg_name
+  backend_port        = 30080
 }
+
 
 # ACR
 module "acr" {
