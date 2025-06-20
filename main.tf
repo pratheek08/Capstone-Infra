@@ -149,78 +149,78 @@ module "aks2" {
   depends_on = [module.acr]
 }
 
-// resource "azurerm_public_ip" "ingress_ip_1" {
-//   name                = "ingress-ip-vnet1"
-//   location            = var.vnet1_location
-//   resource_group_name = module.resource_group.rg_name
-//   allocation_method   = "Static"
-//   sku                 = "Standard"
-// }
+resource "azurerm_public_ip" "ingress_ip_1" {
+  name                = "ingress-ip-vnet1"
+  location            = var.vnet1_location
+  resource_group_name = module.resource_group.rg_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
 
-// resource "azurerm_public_ip" "ingress_ip_2" {
-//   name                = "ingress-ip-vnet2"
-//   location            = var.vnet2_location
-//   resource_group_name = module.resource_group.rg_name
-//   allocation_method   = "Static"
-//   sku                 = "Standard"
-// }
-// output "ingress_ip_vnet1" {
-//   value = azurerm_public_ip.ingress_ip_1.ip_address
-// }
+resource "azurerm_public_ip" "ingress_ip_2" {
+  name                = "ingress-ip-vnet2"
+  location            = var.vnet2_location
+  resource_group_name = module.resource_group.rg_name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+output "ingress_ip_vnet1" {
+  value = azurerm_public_ip.ingress_ip_1.ip_address
+}
 
-// output "ingress_ip_vnet2" {
-//   value = azurerm_public_ip.ingress_ip_2.ip_address
-// }
-// resource "null_resource" "install_ingress_aks1" {
-//   depends_on = [module.aks1, azurerm_public_ip.ingress_ip_1]
+output "ingress_ip_vnet2" {
+  value = azurerm_public_ip.ingress_ip_2.ip_address
+}
+resource "null_resource" "install_ingress_aks1" {
+  depends_on = [module.aks1, azurerm_public_ip.ingress_ip_1]
 
-//   provisioner "local-exec" {
-//     command = <<EOT
-//     az aks get-credentials -g ${module.resource_group.rg_name} -n aks-cluster-vnet1 --overwrite-existing
+  provisioner "local-exec" {
+    command = <<EOT
+    az aks get-credentials -g ${module.resource_group.rg_name} -n aks-cluster-vnet1 --overwrite-existing
 
-//     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx || true
-//     helm repo update
+    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx || true
+    helm repo update
 
-//     helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
-//       --namespace ingress-nginx --create-namespace \
-//       --set controller.service.type=LoadBalancer \
-//       --set controller.service.loadBalancerIP="${azurerm_public_ip.ingress_ip_1.ip_address}" \
-//       --set controller.service.annotations."service\\.beta\\.kubernetes\\.io/azure-load-balancer-resource-group"="${module.resource_group.rg_name}"
-//     EOT
-//   }
-// }
+    helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+      --namespace ingress-nginx --create-namespace \
+      --set controller.service.type=LoadBalancer \
+      --set controller.service.loadBalancerIP="${azurerm_public_ip.ingress_ip_1.ip_address}" \
+      --set controller.service.annotations."service\\.beta\\.kubernetes\\.io/azure-load-balancer-resource-group"="${module.resource_group.rg_name}"
+    EOT
+  }
+}
 
-// resource "null_resource" "install_ingress_aks2" {
-//   depends_on = [module.aks2, azurerm_public_ip.ingress_ip_2]
+resource "null_resource" "install_ingress_aks2" {
+  depends_on = [module.aks2, azurerm_public_ip.ingress_ip_2]
 
-//   provisioner "local-exec" {
-//     command = <<EOT
-//     az aks get-credentials -g ${module.resource_group.rg_name} -n aks-cluster-vnet2 --overwrite-existing
+  provisioner "local-exec" {
+    command = <<EOT
+    az aks get-credentials -g ${module.resource_group.rg_name} -n aks-cluster-vnet2 --overwrite-existing
 
-//     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx || true
-//     helm repo update
+    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx || true
+    helm repo update
 
-//     helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
-//       --namespace ingress-nginx --create-namespace \
-//       --set controller.service.type=LoadBalancer \
-//       --set controller.service.loadBalancerIP="${azurerm_public_ip.ingress_ip_2.ip_address}" \
-//       --set controller.service.annotations."service\\.beta\\.kubernetes\\.io/azure-load-balancer-resource-group"="${module.resource_group.rg_name}"
-//     EOT
-//   }
-// }
+    helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+      --namespace ingress-nginx --create-namespace \
+      --set controller.service.type=LoadBalancer \
+      --set controller.service.loadBalancerIP="${azurerm_public_ip.ingress_ip_2.ip_address}" \
+      --set controller.service.annotations."service\\.beta\\.kubernetes\\.io/azure-load-balancer-resource-group"="${module.resource_group.rg_name}"
+    EOT
+  }
+}
 
 
 
 
 # Traffic Manager
-// module "traffic_manager" {
-//   source              = "./Modules/TrafficManager"
-//   profile_name        = "global-tm"
-//   dns_name            = "my-global-aks"
-//   resource_group_name = module.resource_group.rg_name
-//   primary_ip          = azurerm_public_ip.ingress_ip_1.ip_address
-//   primary_location    = var.vnet1_location
-//   secondary_ip        = azurerm_public_ip.ingress_ip_2.ip_address
-//   secondary_location  = var.vnet2_location
-// }
+module "traffic_manager" {
+  source              = "./Modules/TrafficManager"
+  profile_name        = "global-tm"
+  dns_name            = "my-global-aks"
+  resource_group_name = module.resource_group.rg_name
+  primary_ip          = azurerm_public_ip.ingress_ip_1.ip_address
+  primary_location    = var.vnet1_location
+  secondary_ip        = azurerm_public_ip.ingress_ip_2.ip_address
+  secondary_location  = var.vnet2_location
+}
 
