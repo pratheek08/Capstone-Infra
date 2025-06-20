@@ -91,21 +91,21 @@ module "vnet2_to_vnet1" {
 //   depends_on = [module.vnet2]
 // }
 
-// module "lb1" {
-//   source              = "./Modules/LoadBalancer"
-//   name                = "lb-prod"
-//   location            = var.vnet1_location
-//   resource_group_name = module.resource_group.rg_name
-//   backend_port        = 30080
-// }
+module "lb1" {
+  source              = "./Modules/LoadBalancer"
+  name                = "lb-prod"
+  location            = var.vnet1_location
+  resource_group_name = module.resource_group.rg_name
+  backend_port        = 30080
+}
 
-// module "lb2" {
-//   source              = "./Modules/LoadBalancer"
-//   name                = "lb-dev"
-//   location            = var.vnet2_location
-//   resource_group_name = module.resource_group.rg_name
-//   backend_port        = 30080
-// }
+module "lb2" {
+  source              = "./Modules/LoadBalancer"
+  name                = "lb-dev"
+  location            = var.vnet2_location
+  resource_group_name = module.resource_group.rg_name
+  backend_port        = 30080
+}
 
 
 # ACR
@@ -130,10 +130,10 @@ module "traffic_manager" {
   
   // secondary_ip = module.appgw2.public_ip
   // secondary_location  = var.vnet2_location
-  primary_ip          = null
-  primary_location    = null
-  secondary_ip        = null
-  secondary_location  = null
+   primary_ip          = module.lb1.lb_public_ip
+  primary_location    = var.vnet1_location
+  secondary_ip        = module.lb2.lb_public_ip
+  secondary_location  = var.vnet2_location
 }
 
 # AKS in VNet 1
