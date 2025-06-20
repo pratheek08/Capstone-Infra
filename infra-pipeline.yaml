@@ -57,4 +57,4 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
-                terraform apply -auto-approve tfplan
+                terraform apply -auto-approve  -lock=false tfplan
