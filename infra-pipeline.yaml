@@ -58,21 +58,5 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
-                terraform apply -auto-approve -lock=false tfplan
-          - task: AzureCLI@2
-            displayName: 'Push errored.tfstate to backend'
-            condition: failed()  # Run only if apply failed
-            inputs:
-              azureSubscription: $(azureServiceConnection)
-              scriptType: bash
-              scriptLocation: inlineScript
-              workingDirectory: $(terraformDirectory)
-              inlineScript: |
-                echo "Checking for errored.tfstate..."
-                if [ -f errored.tfstate ]; then
-                  echo "Pushing errored.tfstate to backend..."
-                  terraform init -upgrade
-                  terraform state push errored.tfstate
-                else
-                  echo "No errored.tfstate found. Skipping."
-                fi
+                terraform apply -auto-approve tfplan
+         
