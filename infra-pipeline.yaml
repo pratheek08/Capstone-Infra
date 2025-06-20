@@ -58,7 +58,7 @@ stages:
               workingDirectory: $(terraformDirectory)
               inlineScript: |
                 echo "Force unlocking Terraform state..."
-                terraform force-unlock 65c31f81-96d7-ad36-aa62-c60741d4aa5b
+                terraform force-unlock -force 65c31f81-96d7-ad36-aa62-c60741d4aa5b
                 
           - task: AzureCLI@2
             displayName: 'Terraform Apply'
