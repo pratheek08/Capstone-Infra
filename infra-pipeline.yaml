@@ -58,5 +58,6 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
+                terraform state push errored.tfstate
                 terraform apply -auto-approve -lock=false tfplan
          
