@@ -91,21 +91,21 @@ module "vnet2_to_vnet1" {
 //   depends_on = [module.vnet2]
 // }
 
-module "lb1" {
-  source              = "./Modules/LoadBalancer"
-  name                = "lb-prod"
-  location            = var.vnet1_location
-  resource_group_name = module.resource_group.rg_name
-  backend_port        = 30080
-}
+// module "lb1" {
+//   source              = "./Modules/LoadBalancer"
+//   name                = "lb-prod"
+//   location            = var.vnet1_location
+//   resource_group_name = module.resource_group.rg_name
+//   backend_port        = 30080
+// }
 
-module "lb2" {
-  source              = "./Modules/LoadBalancer"
-  name                = "lb-dev"
-  location            = var.vnet2_location
-  resource_group_name = module.resource_group.rg_name
-  backend_port        = 30080
-}
+// module "lb2" {
+//   source              = "./Modules/LoadBalancer"
+//   name                = "lb-dev"
+//   location            = var.vnet2_location
+//   resource_group_name = module.resource_group.rg_name
+//   backend_port        = 30080
+// }
 
 
 # ACR
