@@ -155,14 +155,7 @@ module "traffic_manager" {
   profile_name        = "global-tm"
   dns_name            = "my-global-aks"
   resource_group_name = module.resource_group.rg_name
-
-  // primary_ip   = module.appgw1.public_ip
-  // primary_location    = var.vnet1_location
-
-  
-  // secondary_ip = module.appgw2.public_ip
-  // secondary_location  = var.vnet2_location
-   primary_ip          = module.lb1.lb_public_ip
+  primary_ip          = module.lb1.lb_public_ip
   primary_location    = var.vnet1_location
   secondary_ip        = module.lb2.lb_public_ip
   secondary_location  = var.vnet2_location
