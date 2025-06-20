@@ -150,7 +150,7 @@ module "aks2" {
 }
 
 resource "azurerm_public_ip" "ingress_ip_1" {
-  name                = "ingress-ip-vnet1"
+  name                = "ingressip-vnet1"
   location            = var.vnet1_location
   resource_group_name = module.resource_group.rg_name
   allocation_method   = "Static"
@@ -158,7 +158,7 @@ resource "azurerm_public_ip" "ingress_ip_1" {
 }
 
 resource "azurerm_public_ip" "ingress_ip_2" {
-  name                = "ingress-ip-vnet2"
+  name                = "ingressip-vnet2"
   location            = var.vnet2_location
   resource_group_name = module.resource_group.rg_name
   allocation_method   = "Static"
