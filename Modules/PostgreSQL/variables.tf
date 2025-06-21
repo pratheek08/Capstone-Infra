@@ -9,7 +9,7 @@ variable "admin_password" {
   sensitive = true
 }
 variable "sku_name" {
-  default = "Standard_B1ms"
+  default = "GP_Gen5_2"
 }
 variable "storage_mb" {
   default = 32768
