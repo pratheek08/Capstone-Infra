@@ -7,8 +7,7 @@ resource "azurerm_postgresql_flexible_server" "this" {
   administrator_password = var.admin_password
   sku_name               = var.sku_name
   storage_mb             = var.storage_mb
-  backup_retention_days = 7
-  geo_redundant_backup  = "Disabled"
+  backup_retention_days  = 7
 
   high_availability {
     mode = "Disabled"
@@ -17,6 +16,10 @@ resource "azurerm_postgresql_flexible_server" "this" {
   authentication {
     password_auth_enabled         = true
     active_directory_auth_enabled = false
+  }
+
+  tags = {
+    Environment = "Dev"
   }
 }
 
