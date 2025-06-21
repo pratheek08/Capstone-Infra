@@ -210,8 +210,6 @@ resource "null_resource" "install_ingress_aks2" {
 }
 
 
-
-
 # Traffic Manager
 module "traffic_manager" {
   source              = "./Modules/TrafficManager"
@@ -222,5 +220,15 @@ module "traffic_manager" {
   primary_location    = var.vnet1_location
   secondary_ip        = azurerm_public_ip.ingress_ip_2.ip_address
   secondary_location  = var.vnet2_location
+}
+
+module "postgresql" {
+  source                = "./Modules/PostgreSQL"
+  postgresql_server_name = "my-pgsql-server"
+  resource_group_name    = module.resource_group.rg_name
+  location               = var.location
+  admin_username         = var.pg_admin_username
+  admin_password         = var.pg_admin_password
+  database_name          = "mydatabase"
 }
 
