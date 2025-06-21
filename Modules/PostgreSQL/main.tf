@@ -11,6 +11,12 @@ resource "azurerm_postgresql_flexible_server" "this" {
 
   // delegated_subnet_id = var.subnet_id
   // private_dns_zone_id = var.private_dns_zone_id
+  zone = "1"
+
+  high_availability {
+    mode                       = "ZoneRedundant"
+    standby_availability_zone = "2"  # opposite of the primary zone
+  }
 
   authentication {
     password_auth_enabled         = true
