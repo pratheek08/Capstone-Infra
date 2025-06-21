@@ -9,9 +9,6 @@ resource "azurerm_postgresql_flexible_server" "this" {
   storage_mb             = var.storage_mb
   backup_retention_days  = 7
 
-  high_availability {
-    mode = "Disabled"
-  }
 
   authentication {
     password_auth_enabled         = true
