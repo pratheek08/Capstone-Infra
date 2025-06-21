@@ -9,7 +9,7 @@ variable "admin_password" {
   sensitive = true
 }
 variable "sku_name" {
-  default = "GP_Gen5_2"
+  default = "	MO_Gen5_4"
 }
 variable "storage_mb" {
   default = 32768
