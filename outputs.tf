@@ -10,3 +10,7 @@ output "vnet1_name" {
 output "vnet2_name" {
   value = module.vnet2.vnet_name
 }
+
+output "postgresql_fqdn" {
+  value = module.postgresql.postgresql_fqdn
+}
