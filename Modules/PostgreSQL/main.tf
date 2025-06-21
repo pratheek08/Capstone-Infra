@@ -35,3 +35,11 @@ resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_all" {
   start_ip_address = "0.0.0.0"
   end_ip_address   = "0.0.0.0"
 }
+
+resource "azurerm_key_vault_secret" "postgres_password" {
+  name         = "postgres-admin-password"
+  value        = var.admin_password
+  key_vault_id = var.key_vault_id
+  depends_on   = [azurerm_postgresql_flexible_server.this]
+}
+
