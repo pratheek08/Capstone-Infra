@@ -95,5 +95,6 @@ variable "pg_admin_username" {
   default = "pgadmin"
 }
 variable "pg_admin_password" {
-  sensitive = true
+  description = "PostgreSQL admin password"
+  sensitive   = true
 }
