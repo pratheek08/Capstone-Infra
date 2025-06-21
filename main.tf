@@ -222,44 +222,44 @@ module "traffic_manager" {
   secondary_location  = var.vnet2_location
 }
 
-// module "postgresql" {
-//   source                = "./Modules/PostgreSQL"
-//   postgresql_server_name = "my-pgsql-server"
-//   resource_group_name    = module.resource_group.rg_name
-//   location               = var.location
-//   admin_username         = var.pg_admin_username
-//   admin_password         = var.pg_admin_password
-//   database_name          = "mydatabase"
-// }
 module "postgresql" {
-  source              = "./Modules/PostgreSQL"
-  postgresql_server_name = "mypgsqlserver"
+  source                = "./Modules/PostgreSQL"
+  postgresql_server_name = "my-pgsql-server"
   resource_group_name    = module.resource_group.rg_name
   location               = var.location
-  postgres_version       = "13"
-  admin_username         = "pgadmin"
-  admin_password         = var.pg_admin_password  # read from tfvars or secret store
-  sku_name               = "B_Gen5_1"
-  storage_mb             = 32768
-  database_name          = "mydb"
-  subnet_id              = module.vnet1.subnet_ids[1] # ensure it's delegated to PostgreSQL
-  private_dns_zone_id    = data.azurerm_private_dns_zone.postgres.id
-  key_vault_id           = module.keyvault.id
-  zone                   = "1"
+  admin_username         = var.pg_admin_username
+  admin_password         = var.pg_admin_password
+  database_name          = "mydatabase"
 }
-resource "azurerm_key_vault" "this" {
-  name                        = var.keyvault_name
-  location                    = var.location
-  resource_group_name         = var.resource_group_name
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-  sku_name                    = "standard"
-  soft_delete_retention_days = 7
-  purge_protection_enabled   = false
-  access_policy {
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
+// module "postgresql" {
+//   source              = "./Modules/PostgreSQL"
+//   postgresql_server_name = "mypgsqlserver"
+//   resource_group_name    = module.resource_group.rg_name
+//   location               = var.location
+//   postgres_version       = "13"
+//   admin_username         = "pgadmin"
+//   admin_password         = var.pg_admin_password  # read from tfvars or secret store
+//   sku_name               = "B_Gen5_1"
+//   storage_mb             = 32768
+//   database_name          = "mydb"
+//   subnet_id              = module.vnet1.subnet_ids[1] # ensure it's delegated to PostgreSQL
+//   private_dns_zone_id    = data.azurerm_private_dns_zone.postgres.id
+//   key_vault_id           = module.keyvault.id
+//   zone                   = "1"
+// }
+// resource "azurerm_key_vault" "this" {
+//   name                        = var.keyvault_name
+//   location                    = var.location
+//   resource_group_name         = var.resource_group_name
+//   tenant_id                   = data.azurerm_client_config.current.tenant_id
+//   sku_name                    = "standard"
+//   soft_delete_retention_days = 7
+//   purge_protection_enabled   = false
+//   access_policy {
+//     tenant_id = data.azurerm_client_config.current.tenant_id
+//     object_id = data.azurerm_client_config.current.object_id
 
-    secret_permissions = ["Get", "Set", "Delete", "List"]
-  }
-}
+//     secret_permissions = ["Get", "Set", "Delete", "List"]
+//   }
+// }
 
