@@ -19,11 +19,6 @@ stages:
             inputs:
               versionSpec: '3.x'
 
-          - script: |
-              curl -sLo terraform.zip https://releases.hashicorp.com/terraform/1.7.5/terraform_1.7.5_linux_amd64.zip
-              unzip terraform.zip
-              sudo mv terraform /usr/local/bin/
-            displayName: 'Install Terraform'
 
           - script: terraform init -upgrade
             displayName: 'Terraform Init'
