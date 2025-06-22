@@ -4,10 +4,10 @@ pool:
 
 variables:
   terraformDirectory: '.'
-  ARM_CLIENT_ID: "bbff8d6a-7861-4cf7-97bf-b4f700f60d1e"
-  ARM_CLIENT_SECRET: "~lK8Q~nBG47GLdhbIOS69w-ks_efRs4U-g3A1a5U"
-  ARM_SUBSCRIPTION_ID: "1674f375-e996-4423-bd25-e0e8f6e76d13"
-  ARM_TENANT_ID: "ec6e8fb5-4284-4351-b9af-a68b18acee8e"
+  # ARM_CLIENT_ID: "bbff8d6a-7861-4cf7-97bf-b4f700f60d1e"
+  # ARM_CLIENT_SECRET: "~lK8Q~nBG47GLdhbIOS69w-ks_efRs4U-g3A1a5U"
+  # ARM_SUBSCRIPTION_ID: "1674f375-e996-4423-bd25-e0e8f6e76d13"
+  # ARM_TENANT_ID: "ec6e8fb5-4284-4351-b9af-a68b18acee8e"
 
 stages:
   - stage: Terraform
