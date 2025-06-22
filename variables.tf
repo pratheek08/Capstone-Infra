@@ -90,8 +90,4 @@ variable "additional_node_count" {
 variable "kubernetes_version" {
   default = "1.29.15"
 }
-variable "client_id" {}
-variable "client_secret" {}
-variable "tenant_id" {}
-variable "subscription_id" {}
 
