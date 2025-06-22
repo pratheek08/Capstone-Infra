@@ -1,4 +1,7 @@
-trigger: main # Manual trigger only
+trigger:
+  branches:
+    include:
+      - main # Manual trigger only
 
 pool:
   name: Default
