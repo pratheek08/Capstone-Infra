@@ -15,11 +15,6 @@ stages:
       - job: TerraformJob
         displayName: 'Terraform Infrastructure Deployment'
         steps:
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '3.x'
-
-
           - script: terraform init -upgrade
             displayName: 'Terraform Init'
             workingDirectory: $(terraformDirectory)
@@ -36,4 +31,5 @@ stages:
 
           - script: terraform apply -auto-approve -lock=false tfplan
             displayName: 'Terraform Apply'
+            continueOnError: true
             workingDirectory: $(terraformDirectory)
