@@ -5,7 +5,7 @@ pool:
 
 variables:
   terraformDirectory: '.'
-  azureServiceConnection: 'ACR'
+  azureServiceConnection: 'ARM'
 
 stages:
   - stage: Terraform
