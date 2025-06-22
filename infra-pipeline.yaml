@@ -1,57 +1,73 @@
 trigger: none
-
 pool:
   name: Default
-
 variables:
-  terraformDirectory: '.'         # Change this if your main.tf is in a subfolder
-  azureServiceConnection: 'ARM'   # Replace with your actual service connection name
-
+  terraformDirectory: '.'
+  azureServiceConnection: 'ARM'
 stages:
   - stage: Terraform
-    displayName: 'Terraform Deployment Stage'
     jobs:
       - job: TerraformJob
-        displayName: 'Run Terraform Commands'
+        displayName: 'Terraform Infrastructure Deployment'
         steps:
-          # Step 1: Terraform Init
-          - task: TerraformTaskV4@4
+          - task: AzureCLI@2
             displayName: 'Terraform Init'
             inputs:
-              provider: 'azurerm'
-              command: 'init'
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
-              backendServiceArm: $(azureServiceConnection)
-              backendAzureRmResourceGroupName: 'JITHUSTORAGE-rg'
-              backendAzureRmStorageAccountName: 'jithustatestorage'
-              backendAzureRmContainerName: 'tfstate'
-              backendAzureRmKey: 'terraform.tfstate'
+              inlineScript: |
+                terraform init -upgrade
+          # - task: AzureCLI@2
+          #   displayName: 'Terraform destroy'
+          #   inputs:
+          #     azureSubscription: $(azureServiceConnection)
+          #     scriptType: bash
+          #     scriptLocation: inlineScript
+          #     workingDirectory: $(terraformDirectory)
+          #     inlineScript: |
+          #       terraform destroy -auto-approve
 
-          # Step 2: Terraform Validate
-          - task: TerraformTaskV4@4
+          - task: AzureCLI@2
             displayName: 'Terraform Validate'
             inputs:
-              provider: 'azurerm'
-              command: 'validate'
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
+              inlineScript: |
+                terraform validate
 
-          # Step 3: Terraform Plan
-          - task: TerraformTaskV4@4
+          - task: AzureCLI@2
             displayName: 'Terraform Plan'
             inputs:
-              provider: 'azurerm'
-              command: 'plan'
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
-              environmentServiceNameAzureRM: $(azureServiceConnection)
-
-          # Step 4: Terraform Apply
-          - task: TerraformTaskV4@4
+              inlineScript: |
+                terraform taint null_resource.install_ingress_aks2
+                terraform plan -lock=false -out=tfplan
+          # - task: AzureCLI@2
+          #   displayName: 'Terraform Force Unlock'
+          #   condition: always()  # Optional: Always runs, even if previous steps fail
+          #   inputs:
+          #     azureSubscription: $(azureServiceConnection)
+          #     scriptType: bash
+          #     scriptLocation: inlineScript
+          #     workingDirectory: $(terraformDirectory)
+          #     inlineScript: |
+          #       echo "Force unlocking Terraform state..."
+          #       terraform force-unlock -force 65c31f81-96d7-ad36-aa62-c60741d4aa5b
+                
+          - task: AzureCLI@2
             displayName: 'Terraform Apply'
+            continueOnError: true
             inputs:
-              provider: 'azurerm'
-              command: 'apply'
+              azureSubscription: $(azureServiceConnection)
+              scriptType: bash
+              scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
-              environmentServiceNameAzureRM: $(azureServiceConnection)
-              allowTelemetryCollection: true
-              runAzLogin: true
-              args: '-auto-approve'
+              inlineScript: |
+                terraform apply -auto-approve -lock=false tfplan
