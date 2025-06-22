@@ -1,24 +1,15 @@
 trigger: none
-
 pool:
   name: Default
-
 variables:
-  terraformDirectory: '.'         
-  azureServiceConnection: 'ARM'   
-
+  terraformDirectory: '.'
+  azureServiceConnection: 'ACR'
 stages:
   - stage: Terraform
-    displayName: 'Terraform Deployment Stage'
     jobs:
       - job: TerraformJob
-        displayName: 'Run Terraform Commands'
+        displayName: 'Terraform Infrastructure Deployment'
         steps:
-          # Step 1: Verify Terraform version (optional)
-          - script: terraform version
-            displayName: 'Check Terraform Version'
-
-          # Step 2: Terraform Init
           - task: AzureCLI@2
             displayName: 'Terraform Init'
             inputs:
@@ -27,9 +18,17 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
-                terraform init -upgrade -input=false
+                terraform init -upgrade
+          # - task: AzureCLI@2
+          #   displayName: 'Terraform destroy'
+          #   inputs:
+          #     azureSubscription: $(azureServiceConnection)
+          #     scriptType: bash
+          #     scriptLocation: inlineScript
+          #     workingDirectory: $(terraformDirectory)
+          #     inlineScript: |
+          #       terraform destroy -auto-approve
 
-          # Step 3: Terraform Validate
           - task: AzureCLI@2
             displayName: 'Terraform Validate'
             inputs:
@@ -40,7 +39,6 @@ stages:
               inlineScript: |
                 terraform validate
 
-          # Step 4: Terraform Plan
           - task: AzureCLI@2
             displayName: 'Terraform Plan'
             inputs:
@@ -49,23 +47,27 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
-                terraform plan -out=tfplan
-
-          # Step 5: Publish Plan Artifact
-          - task: PublishBuildArtifacts@1
-            displayName: 'Publish Terraform Plan Artifact'
-            inputs:
-              PathtoPublish: '$(terraformDirectory)/tfplan'
-              ArtifactName: 'tfplan'
-              publishLocation: 'Container'
-
-          # Step 6: Terraform Apply
+                terraform taint null_resource.install_ingress_aks2
+                terraform plan -lock=false -out=tfplan
+          # - task: AzureCLI@2
+          #   displayName: 'Terraform Force Unlock'
+          #   condition: always()  # Optional: Always runs, even if previous steps fail
+          #   inputs:
+          #     azureSubscription: $(azureServiceConnection)
+          #     scriptType: bash
+          #     scriptLocation: inlineScript
+          #     workingDirectory: $(terraformDirectory)
+          #     inlineScript: |
+          #       echo "Force unlocking Terraform state..."
+          #       terraform force-unlock -force 65c31f81-96d7-ad36-aa62-c60741d4aa5b
+                
           - task: AzureCLI@2
             displayName: 'Terraform Apply'
+            continueOnError: true
             inputs:
               azureSubscription: $(azureServiceConnection)
               scriptType: bash
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
-                terraform apply -auto-approve tfplan
+                terraform apply -auto-approve -lock=false tfplan
