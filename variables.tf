@@ -56,7 +56,7 @@ variable "vnet2_address_space" {
 }
 
 variable "vnet1_subnet_names" {
-  default = ["jithusubnet1-a", "subnet1-b"]
+  default = ["jithusubnet1-a", "jithusubnet1-b"]
 }
 
 variable "vnet2_subnet_names" {
@@ -74,7 +74,7 @@ variable "vnet2_subnet_prefixes" {
 
 # ACR
 variable "acr_name" {
-  default = "jithuacrCap"
+  default = "jithuacrcap"
 }
 
 # AKS
