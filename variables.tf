@@ -12,15 +12,15 @@ variable "vnet2_location" {
 
 
 variable "rg_name" {
-  default = "modular-rg"
+  default = "jithuCapstone-rg"
 }
 
 variable "vnet1_name" {
-  default = "vnet-one"
+  default = "jithuvnet-one"
 }
 
 variable "vnet2_name" {
-  default = "vnet-two"
+  default = "jithuvnet-two"
 }
 
 // variable "vnet1_address_space" {
@@ -56,11 +56,11 @@ variable "vnet2_address_space" {
 }
 
 variable "vnet1_subnet_names" {
-  default = ["subnet1-a", "subnet1-b"]
+  default = ["jithusubnet1-a", "subnet1-b"]
 }
 
 variable "vnet2_subnet_names" {
-  default = ["subnet2-a", "subnet2-b"]
+  default = ["jithusubnet2-a", "subnet2-b"]
 }
 
 variable "vnet1_subnet_prefixes" {
@@ -74,7 +74,7 @@ variable "vnet2_subnet_prefixes" {
 
 # ACR
 variable "acr_name" {
-  default = "mysharedacr1234"
+  default = "jithuacrCap"
 }
 
 # AKS
