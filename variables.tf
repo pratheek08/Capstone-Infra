@@ -20,7 +20,7 @@ variable "vnet1_name" {
 }
 
 variable "vnet2_name" {
-  default = "pratheekVnet2"
+  default = "pratheekVnet-2"
 }
 
 // variable "vnet1_address_space" {
