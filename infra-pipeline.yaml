@@ -3,7 +3,7 @@ pool:
   name: Default
 variables:
   terraformDirectory: '.'
-  azureServiceConnection: 'prashanthscn'
+  azureServiceConnection: 'ARM'
 stages:
   - stage: Terraform
     jobs:
@@ -48,18 +48,7 @@ stages:
               workingDirectory: $(terraformDirectory)
               inlineScript: |
                 terraform plan -lock=false -out=tfplan
-          # - task: AzureCLI@2
-          #   displayName: 'Terraform Force Unlock'
-          #   condition: always()  # Optional: Always runs, even if previous steps fail
-          #   inputs:
-          #     azureSubscription: $(azureServiceConnection)
-          #     scriptType: bash
-          #     scriptLocation: inlineScript
-          #     workingDirectory: $(terraformDirectory)
-          #     inlineScript: |
-          #       echo "Force unlocking Terraform state..."
-          #       terraform force-unlock -force 65c31f81-96d7-ad36-aa62-c60741d4aa5b
-                
+                         
           - task: AzureCLI@2
             displayName: 'Terraform Apply'
             continueOnError: true
