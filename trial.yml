@@ -17,7 +17,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'Terraform Init'
             inputs:
-              azureSubscription: 'pratheekServiceConn'
+              azureSubscription: 'pratheekSConnNew'
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               workingDirectory: '$(terraformDirectory)'
