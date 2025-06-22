@@ -47,7 +47,6 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
-                terraform taint null_resource.install_ingress_aks2
                 terraform plan -lock=false -out=tfplan
           # - task: AzureCLI@2
           #   displayName: 'Terraform Force Unlock'
