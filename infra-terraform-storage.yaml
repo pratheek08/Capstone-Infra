@@ -1,7 +1,7 @@
 trigger: none  # Run manually only
 
 variables:
-  azureServiceConnection: 'ARM'
+  azureServiceConnection: 'pratheekServiceConn'
 
 stages:
   - stage: CreateTerraformBackend
