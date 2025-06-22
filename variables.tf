@@ -91,10 +91,3 @@ variable "kubernetes_version" {
   default = "1.29.15"
 }
 
-variable "pg_admin_username" {
-  default = "pgadmin"
-}
-variable "pg_admin_password" {
-  description = "PostgreSQL admin password"
-  sensitive   = true
-}
