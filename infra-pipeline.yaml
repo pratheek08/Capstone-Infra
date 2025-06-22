@@ -1,4 +1,4 @@
-trigger: none  # Manual trigger only
+trigger: main # Manual trigger only
 
 pool:
   name: Default
