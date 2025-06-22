@@ -10,7 +10,6 @@ variable "vnet2_location" {
   default = "japanwest"
 }
 
-
 variable "rg_name" {
   default = "pratheekRGcapstone"
 }
@@ -22,30 +21,6 @@ variable "vnet1_name" {
 variable "vnet2_name" {
   default = "pratheekVnet-2"
 }
-
-// variable "vnet1_address_space" {
-//   default = ["10.0.0.0/16"]
-// }
-
-// variable "vnet2_address_space" {
-//   default = ["10.1.0.0/16"]
-// }
-
-// variable "vnet1_subnet_names" {
-//   default = ["subnet1-a", "subnet1-b", "appgw-subnet"]
-// }
-
-// variable "vnet2_subnet_names" {
-//   default = ["subnet2-a", "subnet2-b", "appgw-subnet"]
-// }
-
-// variable "vnet1_subnet_prefixes" {
-//   default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-// }
-
-// variable "vnet2_subnet_prefixes" {
-//   default = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
-// }
 
 variable "vnet1_address_space" {
   default = ["10.0.0.0/16"]
@@ -90,4 +65,3 @@ variable "additional_node_count" {
 variable "kubernetes_version" {
   default = "1.29.15"
 }
-
