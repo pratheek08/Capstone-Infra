@@ -1,15 +1,29 @@
 trigger: none
+
 pool:
   name: Default
+
 variables:
   terraformDirectory: '.'
   azureServiceConnection: 'ACR'
+
 stages:
   - stage: Terraform
     jobs:
       - job: TerraformJob
         displayName: 'Terraform Infrastructure Deployment'
         steps:
+
+          # ✅ Step 0: Install Terraform manually (required for self-hosted agents)
+          - script: |
+              echo "Installing Terraform..."
+              curl -sLo terraform.zip https://releases.hashicorp.com/terraform/1.7.5/terraform_1.7.5_linux_amd64.zip
+              unzip terraform.zip
+              sudo mv terraform /usr/local/bin/
+              terraform version
+            displayName: 'Install Terraform'
+
+          # ✅ Step 1: Terraform Init
           - task: AzureCLI@2
             displayName: 'Terraform Init'
             inputs:
@@ -19,16 +33,8 @@ stages:
               workingDirectory: $(terraformDirectory)
               inlineScript: |
                 terraform init -upgrade
-          # - task: AzureCLI@2
-          #   displayName: 'Terraform destroy'
-          #   inputs:
-          #     azureSubscription: $(azureServiceConnection)
-          #     scriptType: bash
-          #     scriptLocation: inlineScript
-          #     workingDirectory: $(terraformDirectory)
-          #     inlineScript: |
-          #       terraform destroy -auto-approve
 
+          # ✅ Step 2: Terraform Validate
           - task: AzureCLI@2
             displayName: 'Terraform Validate'
             inputs:
@@ -39,6 +45,7 @@ stages:
               inlineScript: |
                 terraform validate
 
+          # ✅ Step 3: Terraform Plan (with taint)
           - task: AzureCLI@2
             displayName: 'Terraform Plan'
             inputs:
@@ -49,18 +56,8 @@ stages:
               inlineScript: |
                 terraform taint null_resource.install_ingress_aks2
                 terraform plan -lock=false -out=tfplan
-          # - task: AzureCLI@2
-          #   displayName: 'Terraform Force Unlock'
-          #   condition: always()  # Optional: Always runs, even if previous steps fail
-          #   inputs:
-          #     azureSubscription: $(azureServiceConnection)
-          #     scriptType: bash
-          #     scriptLocation: inlineScript
-          #     workingDirectory: $(terraformDirectory)
-          #     inlineScript: |
-          #       echo "Force unlocking Terraform state..."
-          #       terraform force-unlock -force 65c31f81-96d7-ad36-aa62-c60741d4aa5b
-                
+
+          # ✅ Step 4: Terraform Apply
           - task: AzureCLI@2
             displayName: 'Terraform Apply'
             continueOnError: true
