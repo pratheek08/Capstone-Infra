@@ -1,0 +1,60 @@
+trigger: none
+
+pool:
+  name: Default
+
+variables:
+  terraformDirectory: '.'
+
+stages:
+  - stage: Terraform
+    displayName: 'Terraform Deployment'
+    jobs:
+      - job: TerraformJob
+        displayName: 'Terraform Infrastructure Deployment'
+        steps:
+          # Terraform Init
+          - task: AzureCLI@2
+            displayName: 'Terraform Init'
+            inputs:
+              azureSubscription: 'pratheekServiceConn'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              workingDirectory: '$(terraformDirectory)'
+              inlineScript: |
+                terraform init -upgrade
+
+          # Terraform Validate
+          - task: AzureCLI@2
+            displayName: 'Terraform Validate'
+            inputs:
+              azureSubscription: 'MyAzureConnection'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              workingDirectory: '$(terraformDirectory)'
+              inlineScript: |
+                terraform validate
+
+          # Terraform Plan
+          - task: AzureCLI@2
+            displayName: 'Terraform Plan'
+            inputs:
+              azureSubscription: 'MyAzureConnection'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              workingDirectory: '$(terraformDirectory)'
+              inlineScript: |
+                terraform taint null_resource.install_ingress_aks2 || true
+                terraform plan -lock=false -out=tfplan
+
+          # Terraform Apply
+          - task: AzureCLI@2
+            displayName: 'Terraform Apply'
+            continueOnError: true
+            inputs:
+              azureSubscription: 'MyAzureConnection'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              workingDirectory: '$(terraformDirectory)'
+              inlineScript: |
+                terraform apply -auto-approve -lock=false tfplan
