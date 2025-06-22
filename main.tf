@@ -73,39 +73,6 @@ module "vnet2_to_vnet1" {
 }
 
 
-// module "appgw1" {
-//   source              = "./Modules/Applicationgateway"
-//   name                = "appgw-prod"
-//   location            = var.vnet1_location
-//   resource_group_name = module.resource_group.rg_name
-//   subnet_id           = module.vnet1.subnet_ids[2]  # appgw-subnet
-//   depends_on = [module.vnet1]
-// }
-
-// module "appgw2" {
-//   source              = "./Modules/Applicationgateway"
-//   name                = "appgw-dev"
-//   location            = var.vnet2_location
-//   resource_group_name = module.resource_group.rg_name
-//   subnet_id           = module.vnet2.subnet_ids[2]  # appgw-subnet
-//   depends_on = [module.vnet2]
-// }
-
-// module "lb1" {
-//   source              = "./Modules/LoadBalancer"
-//   name                = "lb-prod"
-//   location            = var.vnet1_location
-//   resource_group_name = module.resource_group.rg_name
-//   backend_port        = 30080
-// }
-
-// module "lb2" {
-//   source              = "./Modules/LoadBalancer"
-//   name                = "lb-dev"
-//   location            = var.vnet2_location
-//   resource_group_name = module.resource_group.rg_name
-//   backend_port        = 30080
-// }
 
 
 # ACR
@@ -122,7 +89,7 @@ module "acr" {
 # AKS in VNet 1
 module "aks1" {
   source                = "./Modules/AKS"
-  cluster_name          = "aks-cluster-vnet1"
+  cluster_name          = "jithuthuaksclustervnet1"
   resource_group_name   = module.resource_group.rg_name
   location              = var.vnet1_location
   subnet_ids            = [module.vnet1.subnet_ids[0], module.vnet1.subnet_ids[1]]
@@ -137,7 +104,7 @@ module "aks1" {
 # AKS in VNet 2
 module "aks2" {
   source                = "./Modules/AKS"
-  cluster_name          = "aks-cluster-vnet2"
+  cluster_name          = "jithuaksclustervnet2"
   resource_group_name   = module.resource_group.rg_name
   location              = var.vnet2_location
   subnet_ids            = [module.vnet2.subnet_ids[0], module.vnet2.subnet_ids[1]]
@@ -213,8 +180,8 @@ resource "null_resource" "install_ingress_aks2" {
 # Traffic Manager
 module "traffic_manager" {
   source              = "./Modules/TrafficManager"
-  profile_name        = "global-tm"
-  dns_name            = "my-global-aks"
+  profile_name        = "jithu-tm"
+  dns_name            = "jithu-global-aks"
   resource_group_name = module.resource_group.rg_name
   primary_ip          = azurerm_public_ip.ingress_ip_1.ip_address
   primary_location    = var.vnet1_location
@@ -222,44 +189,5 @@ module "traffic_manager" {
   secondary_location  = var.vnet2_location
 }
 
-module "postgresql" {
-  source                = "./Modules/PostgreSQL"
-  postgresql_server_name = "my-pgsql-server"
-  resource_group_name    = module.resource_group.rg_name
-  location               = var.location
-  admin_username         = var.pg_admin_username
-  admin_password         = var.pg_admin_password
-  database_name          = "mydatabase"
-}
-// module "postgresql" {
-//   source              = "./Modules/PostgreSQL"
-//   postgresql_server_name = "mypgsqlserver"
-//   resource_group_name    = module.resource_group.rg_name
-//   location               = var.location
-//   postgres_version       = "13"
-//   admin_username         = "pgadmin"
-//   admin_password         = var.pg_admin_password  # read from tfvars or secret store
-//   sku_name               = "B_Gen5_1"
-//   storage_mb             = 32768
-//   database_name          = "mydb"
-//   subnet_id              = module.vnet1.subnet_ids[1] # ensure it's delegated to PostgreSQL
-//   private_dns_zone_id    = data.azurerm_private_dns_zone.postgres.id
-//   key_vault_id           = module.keyvault.id
-//   zone                   = "1"
-// }
-// resource "azurerm_key_vault" "this" {
-//   name                        = var.keyvault_name
-//   location                    = var.location
-//   resource_group_name         = var.resource_group_name
-//   tenant_id                   = data.azurerm_client_config.current.tenant_id
-//   sku_name                    = "standard"
-//   soft_delete_retention_days = 7
-//   purge_protection_enabled   = false
-//   access_policy {
-//     tenant_id = data.azurerm_client_config.current.tenant_id
-//     object_id = data.azurerm_client_config.current.object_id
 
-//     secret_permissions = ["Get", "Set", "Delete", "List"]
-//   }
-// }
 
