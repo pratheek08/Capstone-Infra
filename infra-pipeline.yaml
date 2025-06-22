@@ -1,15 +1,12 @@
-trigger:
-  branches:
-    include:
-      - main # Manual trigger only
+trigger: none  # manual only
 
 pool:
   name: Default
 
 variables:
-  terraformDirectory: '.'         # Adjust if your main.tf is in a subfolder
-  azureServiceConnection: 'ARM'   # Service connection name in Azure DevOps
-  terraformVersion: '1.7.5'       # Adjust as needed
+  terraformDirectory: '.'         
+  azureServiceConnection: 'ARM'   
+  terraformVersion: '1.7.5'       
 
 stages:
   - stage: Terraform
@@ -19,13 +16,11 @@ stages:
         displayName: 'Run Terraform Commands'
         steps:
 
-          # Step 1: Install Terraform (if not on agent)
           - task: TerraformInstaller@1
             displayName: 'Install Terraform'
             inputs:
               terraformVersion: $(terraformVersion)
 
-          # Step 2: Terraform Init
           - task: AzureCLI@2
             displayName: 'Terraform Init'
             inputs:
@@ -36,7 +31,6 @@ stages:
               inlineScript: |
                 terraform init -upgrade -input=false
 
-          # Step 3: Terraform Validate
           - task: AzureCLI@2
             displayName: 'Terraform Validate'
             inputs:
@@ -47,7 +41,6 @@ stages:
               inlineScript: |
                 terraform validate
 
-          # Step 4: Terraform Plan
           - task: AzureCLI@2
             displayName: 'Terraform Plan'
             inputs:
@@ -56,9 +49,8 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
-                terraform plan -lock=false -out=tfplan
+                terraform plan -out=tfplan
 
-          # Optional: Publish tfplan as an artifact
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Terraform Plan Artifact'
             inputs:
@@ -66,7 +58,6 @@ stages:
               ArtifactName: 'tfplan'
               publishLocation: 'Container'
 
-          # Step 5: Terraform Apply
           - task: AzureCLI@2
             displayName: 'Terraform Apply'
             inputs:
@@ -75,4 +66,4 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(terraformDirectory)
               inlineScript: |
-                terraform apply -auto-approve -lock=false tfplan
+                terraform apply -auto-approve tfplan
