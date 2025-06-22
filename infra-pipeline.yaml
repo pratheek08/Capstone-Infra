@@ -1,4 +1,4 @@
-trigger: none  # manual only
+trigger: none
 
 pool:
   name: Default
@@ -6,7 +6,6 @@ pool:
 variables:
   terraformDirectory: '.'         
   azureServiceConnection: 'ARM'   
-  terraformVersion: '1.7.5'       
 
 stages:
   - stage: Terraform
@@ -15,12 +14,11 @@ stages:
       - job: TerraformJob
         displayName: 'Run Terraform Commands'
         steps:
+          # Step 1: Verify Terraform version (optional)
+          - script: terraform version
+            displayName: 'Check Terraform Version'
 
-          - task: TerraformInstaller@1
-            displayName: 'Install Terraform'
-            inputs:
-              terraformVersion: $(terraformVersion)
-
+          # Step 2: Terraform Init
           - task: AzureCLI@2
             displayName: 'Terraform Init'
             inputs:
@@ -31,6 +29,7 @@ stages:
               inlineScript: |
                 terraform init -upgrade -input=false
 
+          # Step 3: Terraform Validate
           - task: AzureCLI@2
             displayName: 'Terraform Validate'
             inputs:
@@ -41,6 +40,7 @@ stages:
               inlineScript: |
                 terraform validate
 
+          # Step 4: Terraform Plan
           - task: AzureCLI@2
             displayName: 'Terraform Plan'
             inputs:
@@ -51,6 +51,7 @@ stages:
               inlineScript: |
                 terraform plan -out=tfplan
 
+          # Step 5: Publish Plan Artifact
           - task: PublishBuildArtifacts@1
             displayName: 'Publish Terraform Plan Artifact'
             inputs:
@@ -58,6 +59,7 @@ stages:
               ArtifactName: 'tfplan'
               publishLocation: 'Container'
 
+          # Step 6: Terraform Apply
           - task: AzureCLI@2
             displayName: 'Terraform Apply'
             inputs:
