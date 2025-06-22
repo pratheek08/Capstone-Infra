@@ -1,5 +1,5 @@
 variable "location" {
-  default = "East US"
+  default = "Japan West"
 }
 
 variable "vnet1_location" {
@@ -7,20 +7,20 @@ variable "vnet1_location" {
 }
 
 variable "vnet2_location" {
-  default = "eastus"
+  default = "japanwest"
 }
 
 
 variable "rg_name" {
-  default = "jithuCapstone-rg"
+  default = "pratheekRGcapstone"
 }
 
 variable "vnet1_name" {
-  default = "jithuvnet-one"
+  default = "pratheekVnet-1"
 }
 
 variable "vnet2_name" {
-  default = "jithuvnet-two"
+  default = "pratheekVnet2"
 }
 
 // variable "vnet1_address_space" {
@@ -56,11 +56,11 @@ variable "vnet2_address_space" {
 }
 
 variable "vnet1_subnet_names" {
-  default = ["jithusubnet1-a", "jithusubnet1-b"]
+  default = ["pratheeksubnet1-a", "pratheeksubnet1-b"]
 }
 
 variable "vnet2_subnet_names" {
-  default = ["jithusubnet2-a", "subnet2-b"]
+  default = ["pratheeksubnet2-a", "pratheeksubnet2-b"]
 }
 
 variable "vnet1_subnet_prefixes" {
@@ -74,7 +74,7 @@ variable "vnet2_subnet_prefixes" {
 
 # ACR
 variable "acr_name" {
-  default = "jithuacrcap"
+  default = "PratheekACRcapstone"
 }
 
 # AKS
