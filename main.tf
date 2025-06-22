@@ -6,8 +6,8 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name  = "JITHUSTORAGE-rg"
-    storage_account_name = "jithustatestorage"      # Must be globally unique
+    resource_group_name  = "pratheekSTORAGE-rg"
+    storage_account_name = "pratheekstorage0008"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
   }
@@ -89,7 +89,7 @@ module "acr" {
 # AKS in VNet 1
 module "aks1" {
   source                = "./Modules/AKS"
-  cluster_name          = "jithuthuaksclustervnet1"
+  cluster_name          = "pratheek-AKS1"
   resource_group_name   = module.resource_group.rg_name
   location              = var.vnet1_location
   subnet_ids            = [module.vnet1.subnet_ids[0], module.vnet1.subnet_ids[1]]
@@ -104,7 +104,7 @@ module "aks1" {
 # AKS in VNet 2
 module "aks2" {
   source                = "./Modules/AKS"
-  cluster_name          = "jithuaksclustervnet2"
+  cluster_name          = "pratheek-AKS2"
   resource_group_name   = module.resource_group.rg_name
   location              = var.vnet2_location
   subnet_ids            = [module.vnet2.subnet_ids[0], module.vnet2.subnet_ids[1]]
@@ -143,7 +143,7 @@ resource "null_resource" "install_ingress_aks1" {
 
   provisioner "local-exec" {
     command = <<EOT
-    az aks get-credentials -g ${module.resource_group.rg_name} -n aks-cluster-vnet1 --overwrite-existing
+    az aks get-credentials -g ${module.resource_group.rg_name} -n pratheek-AKS1 --overwrite-existing
 
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx || true
     helm repo update
@@ -162,7 +162,7 @@ resource "null_resource" "install_ingress_aks2" {
 
   provisioner "local-exec" {
     command = <<EOT
-    az aks get-credentials -g ${module.resource_group.rg_name} -n aks-cluster-vnet2 --overwrite-existing
+    az aks get-credentials -g ${module.resource_group.rg_name} -n pratheek-AKS2 --overwrite-existing
 
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx || true
     helm repo update
@@ -180,8 +180,8 @@ resource "null_resource" "install_ingress_aks2" {
 # Traffic Manager
 module "traffic_manager" {
   source              = "./Modules/TrafficManager"
-  profile_name        = "jithu-tm"
-  dns_name            = "jithu-global-aks"
+  profile_name        = "prathrrk-TM"
+  dns_name            = "pratheek-global-aks"
   resource_group_name = module.resource_group.rg_name
   primary_ip          = azurerm_public_ip.ingress_ip_1.ip_address
   primary_location    = var.vnet1_location
