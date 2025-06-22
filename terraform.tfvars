@@ -27,5 +27,5 @@ vnet2_subnet_prefixes  = ["10.20.1.0/24", "10.20.2.0/24"]
 location           = "East US"
 rg_name                = "my-rg"
 
-pg_admin_password = "asdfghjklzxcvbnm@123"
+
 
