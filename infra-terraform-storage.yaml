@@ -32,7 +32,7 @@ stages:
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az storage account create \
-                  --name pratheekstorage \
+                  --name pratheekstorage0008 \
                   --resource-group pratheekSTORAGE-rg \
                   --location japanwest \
                   --sku Standard_LRS
@@ -47,7 +47,7 @@ stages:
               inlineScript: |
                 ACCOUNT_KEY=$(az storage account keys list \
                   --resource-group pratheekSTORAGE-rg \
-                  --account-name pratheekstorage \
+                  --account-name pratheekstorage0008 \
                   --query '[0].value' \
                   --output tsv)
                 echo "##vso[task.setvariable variable=ACCOUNT_KEY;issecret=true]$ACCOUNT_KEY"
@@ -61,5 +61,5 @@ stages:
               inlineScript: |
                 az storage container create \
                   --name tfstate \
-                  --account-name pratheekstorage \
+                  --account-name pratheekstorage0008 \
                   --account-key $(ACCOUNT_KEY)
