@@ -4,67 +4,54 @@ pool:
   name: Default
 
 variables:
-  terraformDirectory: '.'
-  azureServiceConnection: 'ARM'
+  terraformDirectory: '.'         # Change this if your main.tf is in a subfolder
+  azureServiceConnection: 'ARM'   # Replace with your actual service connection name
 
 stages:
   - stage: Terraform
+    displayName: 'Terraform Deployment Stage'
     jobs:
       - job: TerraformJob
-        displayName: 'Terraform Infrastructure Deployment'
+        displayName: 'Run Terraform Commands'
         steps:
-
-          # ✅ Step 0: Install Terraform manually (required for self-hosted agents)
-          - script: |
-              echo "Installing Terraform..."
-              curl -sLo terraform.zip https://releases.hashicorp.com/terraform/1.7.5/terraform_1.7.5_linux_amd64.zip
-              unzip terraform.zip
-              sudo mv terraform /usr/local/bin/
-              terraform version
-            displayName: 'Install Terraform'
-
-          # ✅ Step 1: Terraform Init
-          - task: AzureCLI@2
+          # Step 1: Terraform Init
+          - task: TerraformTaskV4@4
             displayName: 'Terraform Init'
             inputs:
-              azureSubscription: $(azureServiceConnection)
-              scriptType: bash
-              scriptLocation: inlineScript
+              provider: 'azurerm'
+              command: 'init'
               workingDirectory: $(terraformDirectory)
-              inlineScript: |
-                terraform init -upgrade
+              backendServiceArm: $(azureServiceConnection)
+              backendAzureRmResourceGroupName: 'JITHUSTORAGE-rg'
+              backendAzureRmStorageAccountName: 'jithustatestorage'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: 'terraform.tfstate'
 
-          # ✅ Step 2: Terraform Validate
-          - task: AzureCLI@2
+          # Step 2: Terraform Validate
+          - task: TerraformTaskV4@4
             displayName: 'Terraform Validate'
             inputs:
-              azureSubscription: $(azureServiceConnection)
-              scriptType: bash
-              scriptLocation: inlineScript
+              provider: 'azurerm'
+              command: 'validate'
               workingDirectory: $(terraformDirectory)
-              inlineScript: |
-                terraform validate
 
-          # ✅ Step 3: Terraform Plan (with taint)
-          - task: AzureCLI@2
+          # Step 3: Terraform Plan
+          - task: TerraformTaskV4@4
             displayName: 'Terraform Plan'
             inputs:
-              azureSubscription: $(azureServiceConnection)
-              scriptType: bash
-              scriptLocation: inlineScript
+              provider: 'azurerm'
+              command: 'plan'
               workingDirectory: $(terraformDirectory)
-              inlineScript: |
-                terraform taint null_resource.install_ingress_aks2
-                terraform plan -lock=false -out=tfplan
+              environmentServiceNameAzureRM: $(azureServiceConnection)
 
-          # ✅ Step 4: Terraform Apply
-          - task: AzureCLI@2
+          # Step 4: Terraform Apply
+          - task: TerraformTaskV4@4
             displayName: 'Terraform Apply'
-            continueOnError: true
             inputs:
-              azureSubscription: $(azureServiceConnection)
-              scriptType: bash
-              scriptLocation: inlineScript
+              provider: 'azurerm'
+              command: 'apply'
               workingDirectory: $(terraformDirectory)
-              inlineScript: |
-                terraform apply -auto-approve -lock=false tfplan
+              environmentServiceNameAzureRM: $(azureServiceConnection)
+              allowTelemetryCollection: true
+              runAzLogin: true
+              args: '-auto-approve'
