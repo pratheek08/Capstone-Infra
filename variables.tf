@@ -3,7 +3,7 @@ variable "location" {
 }
 
 variable "vnet1_location" {
-  default = "central india"
+  default = "Australia Central"
 }
 
 variable "vnet2_location" {
