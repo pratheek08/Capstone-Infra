@@ -26,3 +26,8 @@ output "aks_id" {
 output "aks_name" {
   value = azurerm_kubernetes_cluster.aks.name
 }
+
+variable "temporary_nodepool_name" {
+  description = "Temporary name used for node pool rotation"
+  type        = string
+}
