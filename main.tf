@@ -122,6 +122,8 @@ resource "azurerm_public_ip" "ingress_ip_1" {
   resource_group_name = module.resource_group.rg_name
   allocation_method   = "Static"
   sku                 = "Standard"
+
+  depends_on = [module.resource_group]
 }
 
 resource "azurerm_public_ip" "ingress_ip_2" {
@@ -130,6 +132,8 @@ resource "azurerm_public_ip" "ingress_ip_2" {
   resource_group_name = module.resource_group.rg_name
   allocation_method   = "Static"
   sku                 = "Standard"
+
+  depends_on = [module.resource_group]
 }
 output "ingress_ip_vnet1" {
   value = azurerm_public_ip.ingress_ip_1.ip_address
