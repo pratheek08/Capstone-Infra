@@ -158,7 +158,7 @@ resource "null_resource" "install_ingress_aks1" {
       --namespace ingress-nginx --create-namespace \
       --set controller.service.type=LoadBalancer \
       --set controller.service.loadBalancerIP="${azurerm_public_ip.ingress_ip_1.ip_address}" \
-      --set controller.service.annotations."service\\.beta\\.kubernetes\\.io/azure-load-balancer-resource-group"="${module.resource_group.rg_name}"
+      --set controller.service.annotations."service\\.beta\\.kubernetes\\.io/azure-load-balancer-resource-group"="${module.resource_group.rg_name}" || true
     EOT
   }
 }
@@ -177,7 +177,7 @@ resource "null_resource" "install_ingress_aks2" {
       --namespace ingress-nginx --create-namespace \
       --set controller.service.type=LoadBalancer \
       --set controller.service.loadBalancerIP="${azurerm_public_ip.ingress_ip_2.ip_address}" \
-      --set controller.service.annotations."service\\.beta\\.kubernetes\\.io/azure-load-balancer-resource-group"="${module.resource_group.rg_name}"
+      --set controller.service.annotations."service\\.beta\\.kubernetes\\.io/azure-load-balancer-resource-group"="${module.resource_group.rg_name}" ||true
     EOT
   }
 }
