@@ -47,6 +47,11 @@ stages:
                 terraform taint null_resource.install_ingress_aks2 || true
                 terraform plan -lock=false -out=tfplan
 
+          #Install HELM
+          - script: |
+              curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+            displayName: 'Install Helm CLI'
+
           # Terraform Apply
           - task: AzureCLI@2
             displayName: 'Terraform Apply'
