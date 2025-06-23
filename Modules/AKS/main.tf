@@ -11,6 +11,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     node_count     = var.default_node_count
     vm_size        = var.node_vm_size
     vnet_subnet_id = var.subnet_ids[0]
+    temporary_name_for_rotation  = var.temporary_nodepool_name
   }
 
   identity {
