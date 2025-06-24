@@ -23,6 +23,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
     load_balancer_sku = "standard"
     network_policy = "azure"
   }
+  web_app_routing {
+     
+  }
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "subnet_b_pools" {
